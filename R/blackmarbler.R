@@ -173,7 +173,7 @@ file_to_raster <- function(f,
 read_bm_csv <- function(year, 
                         day,
                         product_id){
-  print(paste0("Reading: ", product_id, "/", year, "/", day))
+  #print(paste0("Reading: ", product_id, "/", year, "/", day))
   df_out <- tryCatch(
     {
       df <- read.csv(paste0("https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/5000/",product_id,"/",year,"/",day,".csv"))
@@ -364,24 +364,24 @@ bm_raster <- function(roi_sf,
     if(product_id %in% c("VNP46A3", "VNP46A4")) variable <- "NearNadir_Composite_Snow_Free"
   }
   
-  # Prep date names ------------------------------------------------------------
-  if(product_id %in% c("VNP46A1", "VNP46A2")){
-    date_names <- paste0("t", date %>% str_replace_all("-", "_"))
-  }
-  
-  if(product_id %in% c("VNP46A3")){
-    date_names <- paste0("t", date %>% str_replace_all("-", "_") %>% substring(1,7))
-  }
-  
-  if(product_id %in% c("VNP46A4")){
-    date_names <- paste0("t", date %>% str_replace_all("-", "_") %>% substring(1,4))
-  }
-  
   # Download data --------------------------------------------------------------
   r_list <- lapply(date, function(date_i){
     
     out <- tryCatch(
       {
+        
+        #### Make name for raster based on date
+        if(product_id %in% c("VNP46A1", "VNP46A2")){
+          date_name_i <- paste0("t", date_i %>% str_replace_all("-", "_"))
+        }
+        
+        if(product_id %in% c("VNP46A3")){
+          date_name_i <- paste0("t", date_i %>% str_replace_all("-", "_") %>% substring(1,7))
+        }
+        
+        if(product_id %in% c("VNP46A4")){
+          date_name_i <- paste0("t", date_i %>% str_replace_all("-", "_") %>% substring(1,4))
+        }
         
         r <- bm_raster_i(roi_sf = roi_sf,
                          product_id = product_id,
@@ -389,7 +389,7 @@ bm_raster <- function(roi_sf,
                          bearer = bearer,
                          variable = variable)
         
-        names(r) <- paste0("t", date_i %>% str_replace_all("-", "_") %>% substring(1,7))
+        names(r) <- date_name_i
         
         return(r)
         
