@@ -2,10 +2,12 @@
 
 if(F){
   library(blackmarbler)
+  library(readr)
+  library(geodata)
   library(ggplot2)
   
   # Setup ------------------------------------------------------------------------
-  bearer <- read_csv("~/Desktop/nasa_bm_bearer.csv") %>%
+  bearer <- read_csv("~/Desktop/bearer_bm.csv") %>%
     pull(token)
   
   roi_sf <- gadm(country = "GHA", level=0, path = tempdir()) %>% st_as_sf()
@@ -18,7 +20,7 @@ if(F){
   #### Make raster
   r <- bm_raster(roi_sf = roi_sf,
                  product_id = "VNP46A3",
-                 month = "2021-10-01",
+                 date = "2021-10-01",
                  bearer = bearer)
   
   #### Prep data
@@ -64,7 +66,7 @@ if(F){
   
   r <- bm_raster(roi_sf = gha_0_sf,
                  product_id = "VNP46A4",
-                 date = 2012:2013,
+                 date = 2012:2021,
                  bearer = bearer)
   
   ntl_df <- exact_extract(r, gha_1_sf, 'mean', progress = FALSE)
