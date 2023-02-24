@@ -3,6 +3,7 @@
 if(T){
   
   # Setup ----------------------------------------------------------------------
+  library(blackmarbler)
   library(hexSticker)
   library(ggplot2)
   library(tidyverse)
@@ -10,7 +11,9 @@ if(T){
   library(rgeos)
   library(sp)
   library(sf)
-  bearer <- "HERE"
+  
+  bearer <- read_csv("~/Desktop/nasa_bm_bearer.csv") %>%
+    pull(token)
   
   # Make ROI -------------------------------------------------------------------
   loc_sf <- data.frame(id = 1,

@@ -297,9 +297,16 @@ download_raster <- function(file_name,
 #' Make a raster of nighttime lights from [NASA Black Marble data](https://blackmarble.gsfc.nasa.gov/)
 
 #' @param roi_sf Region of interest; sf polygon. Must be in the [WGS 84 (epsg:4326)](https://epsg.io/4326) coordinate reference system.
-#' @param product_id Either: `VNP46A1`, `VNP46A2`, `VNP46A3`, or `VNP46A4`. 
-#' @param date Date of raster data. For `VNP46A1` and `VNP46A2` (daily data), a date (eg, `"2021-10-03"`). For `VNP46A3` (monthly data), a date or year-month (e.g., (a) `"2021-10-01"`, where the day will be ignored, or (b) `"2021-10"`). For `VNP46A4` (annual data), year or date  (e.g., (a) `"2021-10-01"`, where the month and day will be ignored, or (b) `"2021"`). Entering one date will produce a raster. Entering multiple dates will produce a raster stack.
-#' @param bearer NASA bearer token. 
+#' @param product_id Either: 
+#' * `"VNP46A1"`: Daily (raw)
+#' * `"VNP46A2"`: Daily (corrected)
+#' * `"VNP46A3"`: Monthly
+#' * `"VNP46A4"`: Annual
+#' @param date Date of raster data. Entering one date will produce a raster. Entering multiple dates will produce a raster stack. 
+#' * For `product_id`s `VNP46A1` and `VNP46A2` a date (eg, `"2021-10-03"`). 
+#' * For `product_id` `VNP46A3`, a date or year-month (e.g., (a) `"2021-10-01"`, where the day will be ignored, or (b) `"2021-10"`).
+#' * For `product_id` `VNP46A4` year or date  (e.g., (a) `"2021-10-01"`, where the month and day will be ignored, or (b) `"2021"`). 
+#' @param bearer NASA bearer token. For instructions on how to create a token, see [here](https://github.com/ramarty/blackmarbler#bearer-token-).
 #' @param variable Variable to used to create raster (default: `NULL`). If `NULL`, uses a a default variable. For `VNP46A1`, uses `DNB_At_Sensor_Radiance_500m`. For `VNP46A2`, uses `Gap_Filled_DNB_BRDF-Corrected_NTL`. For `VNP46A3` and `VNP46A4`, uses `NearNadir_Composite_Snow_Free`. For information on other variable choices, see [here](https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives/Document%20Archive/Science%20Data%20Product%20Documentation/VIIRS_Black_Marble_UG_v1.2_April_2021.pdf); for `VNP46A1`, see Table 3; for `VNP46A2` see Table 6; for `VNP46A3` and `VNP46A4`, see Table 9.
 #'
 #' @return Raster

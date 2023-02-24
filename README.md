@@ -1,6 +1,6 @@
 # blackmarbler <img src="man/figures/hex.png" align="right" width="200" />
 
-Create Georeferenced Rasters of Nighttime Lights from [NASA Black Marble data](https://blackmarble.gsfc.nasa.gov/). **NOTE: This package is under active development and is subject to change**
+Create Georeferenced Rasters of Nighttime Lights from [NASA Black Marble data](https://blackmarble.gsfc.nasa.gov/). 
 
 * [Overview](#overview)
 * [Installation](#installation)
@@ -14,7 +14,7 @@ Create Georeferenced Rasters of Nighttime Lights from [NASA Black Marble data](h
 
 ## Overview <a name="overview"></a>
 
-This package provides functions to download nighttime lights [Black Marble](https://blackmarble.gsfc.nasa.gov/) data. Black Marble data is downloaded from the [NASA LAADS Archive](https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/5000/VNP46A3/). However, downloading data for specific regions for a long time period from the NASA LAADS Archive can be time consuming. This package automates the process of (1) downloading data from the NASA LAADS Archive, (2) converting files from H5 files to geotiff files, and (3) mosiacing files together (when needed).
+This package facilitates downloading nighttime lights [Black Marble](https://blackmarble.gsfc.nasa.gov/) data. Black Marble data is downloaded from the [NASA LAADS Archive](https://ladsweb.modaps.eosdis.nasa.gov/archive/allData/5000/VNP46A3/).  The package automates the process of downloading all relevant tiles from the NASA LAADS archive to cover a region of interest, converting the raw files (in H5 format) to georeferenced rasters, and mosaicing rasters together when needed.
 
 ## Installation <a name="installation">
 
@@ -62,13 +62,18 @@ lights for Ghana.
 
 ```r
 #### Setup
+# Load packages
+library(blackmarbler)
+library(geodata)
+library(sf)
+
 # Define NASA bearer token
 bearer <- "BEARER-TOKEN-HERE"
 
 # Define region of interest (roi). The roi must be (1) an sf polygon and (2)
 # in the WGS84 (epsg:4326) coordinate reference system. Here, we use the 
 # getData function to load a polygon of Ghana
-roi_sf <- getData('GADM', country='GHA', level=0) %>% st_as_sf()
+roi_sf <- gadm(country = "GHA", level=0, path = tempdir()) %>% st_as_sf()
 
 #### Make Rasters
 ### Daily data: raster for February 5, 2021
@@ -165,11 +170,10 @@ We can use multiple rasters over time to observe changes in nighttime lights ove
 library(exactextractr)
 library(ggplot2)
 
-#### Polygons on Ghana
+#### ADM 1 polygons for Ghana
 # Load both country and admin 1 level. Country-level is needed as bm_raster() requires
 # a polygon that is just one row.
-gha_0_sf <- getData('GADM', country='GHA', level=0) %>% st_as_sf()
-gha_1_sf <- getData('GADM', country='GHA', level=1) %>% st_as_sf()
+gha_1_sf <- gadm(country = "GHA", level=1, path = tempdir()) %>% st_as_sf()
 
 #### Extract annual data
 r <- bm_raster(roi_sf = gha_0_sf,
@@ -177,7 +181,7 @@ r <- bm_raster(roi_sf = gha_0_sf,
                date = 2012:2022,
                bearer = bearer)
 
-ntl_df <- exact_extract(r, gha_1_sf, 'mean', progress = FALSE)
+ntl_df <- exact_extract(r_annual, gha_1_sf, 'mean', progress = FALSE)
 ntl_df$NAME_1 <- gha_1_sf$NAME_1
 
 #### Trends over time
