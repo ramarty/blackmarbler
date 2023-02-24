@@ -38,22 +38,31 @@ The function requires using a **Bearer Token**; to obtain a token, follow the be
 
 ### bm_raster() Function <a name="function">
 
-The primary function in the package is `bm_raster`, which produces a raster of black marble nighttime lights. It can produce rasters from the following Black Marble products:
-
-* `VNP46A1`: Daily nighttime lights
-* `VNP46A2`: Daily nighttime lights with additional light corrections.
-* `VNP46A3`: Monthly nighttime lights.
-* `VNP46A4`: Annual nighttime lights.
-
-For more infromation on the different nighttime lights products, see [here](https://blackmarble.gsfc.nasa.gov/#product).
-
-The function takes the following arguments:
+The primary function in the package is `bm_raster`, which produces a raster of black marble nighttime lights. It can produce rasters from the following Black Marble products: The function takes the following arguments:
  
-* `roi_sf`: Region of interest; sf polygon. Must be in the [WGS 84 (epsg:4326)](https://epsg.io/4326) coordinate reference system.
-* `product_id`: Either: `VNP46A1`, `VNP46A2`, `VNP46A3`, or `VNP46A4`. 
-* `date`: Date of raster data. For `VNP46A1` and `VNP46A2` (daily data), a date (eg, `"2021-10-03"`). For `VNP46A3` (monthly data), a date or year-month (e.g., (a) `"2021-10-01"`, where the day will be ignored, or (b) `"2021-10"`). For `VNP46A4` (annual data), year or date  (e.g., (a) `"2021-10-01"`, where the month and day will be ignored, or (b) `"2021"`). Entering one date will produce a raster. Entering multiple dates will produce a raster stack.
-* `bearer`: NASA bearer token. 
-* `variable`: Variable to used to create raster (default: `NULL`). If `NULL`, uses a a default variable. For `VNP46A1`, uses `DNB_At_Sensor_Radiance_500m`. For `VNP46A2`, uses `Gap_Filled_DNB_BRDF-Corrected_NTL`. For `VNP46A3` and `VNP46A4`, uses `NearNadir_Composite_Snow_Free`. For information on other variable choices, see [here](https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives/Document%20Archive/Science%20Data%20Product%20Documentation/VIIRS_Black_Marble_UG_v1.2_April_2021.pdf); for `VNP46A1`, see Table 3; for `VNP46A2` see Table 6; for `VNP46A3` and `VNP46A4`, see Table 9.
+* __roi_sf__ Region of interest; sf polygon. Must be in the [WGS 84 (epsg:4326)](https://epsg.io/4326) coordinate reference system.
+
+* __product_id__ One of the following: 
+
+  - `"VNP46A1"`: Daily (raw)
+  - `"VNP46A2"`: Daily (corrected)
+  - `"VNP46A3"`: Monthly
+  - `"VNP46A4"`: Annual
+  
+* __date__  Date of raster data. Entering one date will produce a raster. Entering multiple dates will produce a raster stack. 
+
+  - For `product_id`s `"VNP46A1"` and `"VNP46A2"`, a date (eg, `"2021-10-03"`). 
+  - For `product_id` `"VNP46A3"`, a date or year-month (e.g., `"2021-10-01"`, where the day will be ignored, or `"2021-10"`).
+  - For `product_id` `"VNP46A4"`, year or date  (e.g., `"2021-10-01"`, where the month and day will be ignored, or `2021`). 
+  - bearer NASA bearer token. 
+
+* __variable__ Variable to used to create raster (default: `NULL`). If `NULL`, uses the following default variables: 
+
+  - For `product_id` `:VNP46A1"`, uses `DNB_At_Sensor_Radiance_500m`. 
+  - For `product_id` `"VNP46A2"`, uses `Gap_Filled_DNB_BRDF-Corrected_NTL`. 
+  - For `product_id`s `"VNP46A3"` and `"VNP46A4"`, uses `NearNadir_Composite_Snow_Free`. 
+
+For information on other variable choices, see [here](https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives/Document%20Archive/Science%20Data%20Product%20Documentation/VIIRS_Black_Marble_UG_v1.2_April_2021.pdf); for `VNP46A1`, see Table 3; for `VNP46A2` see Table 6; for `VNP46A3` and `VNP46A4`, see Table 9.
 
 ### Make raster of nighttime lights <a name="raster">
 
