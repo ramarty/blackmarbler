@@ -64,7 +64,7 @@
 
 
 <dt>product_id</dt>
-<dd><p>Either:</p><ul><li><p><code>"VNP46A1"</code>: Daily (raw)</p></li>
+<dd><p>One of the following:</p><ul><li><p><code>"VNP46A1"</code>: Daily (raw)</p></li>
 <li><p><code>"VNP46A2"</code>: Daily (corrected)</p></li>
 <li><p><code>"VNP46A3"</code>: Monthly</p></li>
 <li><p><code>"VNP46A4"</code>: Annual</p></li>
@@ -72,9 +72,9 @@
 
 
 <dt>date</dt>
-<dd><p>Date of raster data. Entering one date will produce a raster. Entering multiple dates will produce a raster stack.</p><ul><li><p>For <code>product_id</code>s <code>VNP46A1</code> and <code>VNP46A2</code> a date (eg, <code>"2021-10-03"</code>).</p></li>
-<li><p>For <code>product_id</code> <code>VNP46A3</code>, a date or year-month (e.g., (a) <code>"2021-10-01"</code>, where the day will be ignored, or (b) <code>"2021-10"</code>).</p></li>
-<li><p>For <code>product_id</code> <code>VNP46A4</code> year or date  (e.g., (a) <code>"2021-10-01"</code>, where the month and day will be ignored, or (b) <code>"2021"</code>).</p></li>
+<dd><p>Date of raster data. Entering one date will produce a raster. Entering multiple dates will produce a raster stack.</p><ul><li><p>For <code>product_id</code>s <code>"VNP46A1"</code> and <code>"VNP46A2"</code>, a date (eg, <code>"2021-10-03"</code>).</p></li>
+<li><p>For <code>product_id</code> <code>"VNP46A3"</code>, a date or year-month (e.g., <code>"2021-10-01"</code>, where the day will be ignored, or <code>"2021-10"</code>).</p></li>
+<li><p>For <code>product_id</code> <code>"VNP46A4"</code>, year or date  (e.g., <code>"2021-10-01"</code>, where the month and day will be ignored, or <code>2021</code>).</p></li>
 </ul></dd>
 
 
@@ -83,7 +83,11 @@
 
 
 <dt>variable</dt>
-<dd><p>Variable to used to create raster (default: <code>NULL</code>). If <code>NULL</code>, uses a a default variable. For <code>VNP46A1</code>, uses <code>DNB_At_Sensor_Radiance_500m</code>. For <code>VNP46A2</code>, uses <code>Gap_Filled_DNB_BRDF-Corrected_NTL</code>. For <code>VNP46A3</code> and <code>VNP46A4</code>, uses <code>NearNadir_Composite_Snow_Free</code>. For information on other variable choices, see <a href="https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives/Document%20Archive/Science%20Data%20Product%20Documentation/VIIRS_Black_Marble_UG_v1.2_April_2021.pdf" class="external-link">here</a>; for <code>VNP46A1</code>, see Table 3; for <code>VNP46A2</code> see Table 6; for <code>VNP46A3</code> and <code>VNP46A4</code>, see Table 9.</p></dd>
+<dd><p>Variable to used to create raster (default: <code>NULL</code>). If <code>NULL</code>, uses the following default variables:</p><ul><li><p>For <code>product_id</code> <code>:VNP46A1"</code>, uses <code>DNB_At_Sensor_Radiance_500m</code>.</p></li>
+<li><p>For <code>product_id</code> <code>"VNP46A2"</code>, uses <code>Gap_Filled_DNB_BRDF-Corrected_NTL</code>.</p></li>
+<li><p>For <code>product_id</code>s <code>"VNP46A3"</code> and <code>"VNP46A4"</code>, uses <code>NearNadir_Composite_Snow_Free</code>.
+For information on other variable choices, see <a href="https://ladsweb.modaps.eosdis.nasa.gov/api/v2/content/archives/Document%20Archive/Science%20Data%20Product%20Documentation/VIIRS_Black_Marble_UG_v1.2_April_2021.pdf" class="external-link">here</a>; for <code>VNP46A1</code>, see Table 3; for <code>VNP46A2</code> see Table 6; for <code>VNP46A3</code> and <code>VNP46A4</code>, see Table 9.</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -99,8 +103,9 @@
 <span class="r-in"><span><span class="co"># Define bearer token</span></span></span>
 <span class="r-in"><span><span class="va">bearer</span> <span class="op">&lt;-</span> <span class="st">"BEARER-TOKEN-HERE"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># sf polygon of Kenya</span></span></span>
-<span class="r-in"><span><span class="va">roi_sf</span> <span class="op">&lt;-</span> <span class="fu">getData</span><span class="op">(</span><span class="st">'GADM'</span>, country<span class="op">=</span><span class="st">'KEN'</span>, level<span class="op">=</span><span class="fl">0</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># sf polygon of Ghana</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">geodata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">roi_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/geodata/man/gadm.html" class="external-link">gadm</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"GHA"</span>, level<span class="op">=</span><span class="fl">0</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Daily data: raster for October 3, 2021</span></span></span>
 <span class="r-in"><span><span class="va">ken_20210205_r</span> <span class="op">&lt;-</span> <span class="fu">bm_raster</span><span class="op">(</span>roi_sf <span class="op">=</span> <span class="va">roi_sf</span>,</span></span>
